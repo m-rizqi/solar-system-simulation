@@ -4,8 +4,8 @@ import math
 class Object:
     AU = 149.6e6 * 1000
     G = 6.67428e-11
-    SCALE = 250 / AU  # 1AU = 100 pixels
-    TIMESTEP = 3600*24 # 1 day
+    SCALE = 250 / AU 
+    TIMESTEP = 3600*24
     
     def __init__(self, x, y, radius, color, image, mass, y_vel=0):
         self.x = x
@@ -23,6 +23,16 @@ class Object:
     def draw(self, win, window_width, window_height):
         x = self.x * self.SCALE + window_width / 2
         y = self.y * self.SCALE + window_height / 2
+        
+        if len(self.orbit) > 2:
+            updated_points = []
+            for point in self.orbit:
+                x, y = point
+                x = x * self.SCALE + window_width / 2
+                y = y * self.SCALE + window_height / 2
+                updated_points.append((x, y))
+
+            pygame.draw.lines(win, self.color, False, updated_points, 2)
         
         image = pygame.image.load(self.image)
         image = pygame.transform.scale(image, (self.radius * 2, self.radius * 2))
