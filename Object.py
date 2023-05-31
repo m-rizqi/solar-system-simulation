@@ -5,7 +5,7 @@ class Object:
     AU = 149.6e6 * 1000
     G = 6.67428e-11
     SCALE = 250 / AU 
-    TIMESTEP = 3600*24
+    TIMESTEP = 3600*24*7
     
     def __init__(self, x, y, radius, color, image, mass, y_vel=0):
         self.x = x
@@ -39,7 +39,7 @@ class Object:
         image_rect = image.get_rect(center=(x, y))
         win.blit(image, image_rect)
     
-    def attraction(self, other):
+    def attraction_force(self, other):
         other_x, other_y = other.x, other.y
         distance_x = other_x - self.x
         distance_y = other_y - self.y
@@ -57,7 +57,7 @@ class Object:
             if self == object:
                 continue
 
-            fx, fy = self.attraction(object)
+            fx, fy = self.attraction_force(object)
             total_fx += fx
             total_fy += fy
 
