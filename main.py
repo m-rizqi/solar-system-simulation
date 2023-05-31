@@ -37,7 +37,7 @@ def main():
 	
 	earth = Object(1 * Object.AU, 0, 0.0000426 * SIZE_SCALE, EARTH_COLOR, "images/earth.png", 5.9742 * 10**24, -29.783 * 1000)
  
-	moon = Object(1.00000257 * Object.AU, 0, 4, MOON_COLOR, "images/moon.png", 7.342 * 10**22, -1.022 * 1000)
+	moon = Object(1.00000257 * Object.AU, 0, 0.000012742 * SIZE_SCALE, MOON_COLOR, "images/moon.png", 7.342 * 10**2, -1.022 * 1000)
  
 	mars = Object(1.524 * Object.AU, 0, 0.0000227 * SIZE_SCALE, MARS_COLOR, "images/mars.png", 6.39 * 10**23, -24.077 * 1000)
  
@@ -50,6 +50,7 @@ def main():
 	neptune = Object(30.07 * Object.AU, 0, 0.000168 * SIZE_SCALE, NEPTUNE_COLOR, "images/neptune.png", 1.02 * 10**26, 5.43 * 1000)
 	
 	objects = [sun, mercury, venus, earth, mars, jupiter, saturn, uranus, neptune]
+ 
 	while run:
 		clock.tick(60)
 		WIN.fill((0, 0, 0))

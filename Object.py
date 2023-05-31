@@ -5,7 +5,7 @@ class Object:
     AU = 149.6e6 * 1000
     G = 6.67428e-11
     SCALE = 250 / AU 
-    TIMESTEP = 3600*24*7
+    TIMESTEP = 3600*24
     
     def __init__(self, x, y, radius, color, image, mass, y_vel=0):
         self.x = x
@@ -32,7 +32,7 @@ class Object:
                 y = y * self.SCALE + window_height / 2
                 updated_points.append((x, y))
 
-            pygame.draw.lines(win, self.color, False, updated_points, 2)
+            pygame.draw.lines(win, self.color, False, updated_points, int(self.radius * 0.7))
         
         image = pygame.image.load(self.image)
         image = pygame.transform.scale(image, (self.radius * 2, self.radius * 2))
