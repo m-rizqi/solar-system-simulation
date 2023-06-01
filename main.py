@@ -41,10 +41,10 @@ def main():
 	camera_offset_x = 0
 	camera_offset_y = 0
  
-	camera_speed = 10
+	camera_speed = 15
 	
 	zoom_level = 1.0
-	zoom_step = 1.0
+	zoom_step = 5.0
  
 	follow_index = None
 
@@ -73,17 +73,51 @@ def main():
 					zoom_level -= zoom_step
 					for object in objects:
 						object.SCALE = object.BASE_SCALE * zoom_level
+				if event.key == pygame.K_RETURN:
+					zoom_level += 100
+					for object in objects:
+						object.SCALE = object.BASE_SCALE * zoom_level
+				if event.key == pygame.K_BACKSPACE:
+					zoom_level += 100
+					for object in objects:
+						object.SCALE = object.BASE_SCALE * zoom_level
 				elif event.key == pygame.K_1:
 					follow_index = 1
 				elif event.key == pygame.K_2: 
 					follow_index = 2
+				elif event.key == pygame.K_3:
+					follow_index = 3
+				elif event.key == pygame.K_4: 
+					follow_index = 4
+				elif event.key == pygame.K_5:
+					follow_index = 5
+				elif event.key == pygame.K_6: 
+					follow_index = 6
+				elif event.key == pygame.K_7:
+					follow_index = 7
+				elif event.key == pygame.K_8: 
+					follow_index = 8
+				elif event.key == pygame.K_9:
+					follow_index = None
+					camera_offset_x = 0
+					camera_offset_y = 0
+					zoom_level = 1.0
+				elif event.key == pygame.K_0: 
+					follow_index = 0
+		for object in objects:
+			object.isFollowed = False
 		if follow_index is not None:
 			if 0 <= follow_index < len(objects):
 				object_to_follow = objects[follow_index]
-				camera_offset_x = -(object_to_follow.x * object_to_follow.SCALE) + (WIDTH / 2) - (object_to_follow.get_scaled_radius())
-				camera_offset_y = -(object_to_follow.y * object_to_follow.SCALE) + (HEIGHT / 2) - (object_to_follow.get_scaled_radius())
+				x, y, x_vel, y_vel = object_to_follow.calculate_pos_and_vel(objects)
+				x_scaled, y_scaled = object_to_follow.get_scaled_coordinate(x, y, WIDTH, HEIGHT, 0, 0)
+				camera_offset_x = (-1 if x_scaled > 0 else 1) * x_scaled + WIDTH/2
+				camera_offset_y = (-1 if y_scaled > 0 else 1) * y_scaled + HEIGHT/2
+				object_to_follow.isFollowed = True
+
 		for object in objects:
-			object.update_position(objects)
+			# if follow_index is None or objects[follow_index] != object:
+			object.update_position(objects)	
 			object.draw(WIN, WIDTH, HEIGHT, camera_offset_x, camera_offset_y)
    
 		pygame.display.update()

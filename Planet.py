@@ -11,7 +11,7 @@ class Planet(Object):
         FONT = pygame.font.SysFont("Arial", 12)
         
         distance_x, distance_y, distance_to_star = self.get_distance_to_object(self.orbited_star)
-        x, y = self.get_scaled_coordinate(window_width, window_height, camera_offset_x, camera_offset_y)
+        x, y = self.get_scaled_coordinate(self.x, self.y, window_width, window_height, camera_offset_x, camera_offset_y)
         
         distance_text = FONT.render(f"{round(distance_to_star/1000, 1)}km", 1, WHITE)
         label = FONT.render(self.name, 1, WHITE)

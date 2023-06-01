@@ -8,5 +8,5 @@ class Star(Object):
     def draw_information(self, win, window_width, window_height, camera_offset_x, camera_offset_y):
         FONT = pygame.font.SysFont("Arial", 12)
         label = FONT.render(self.name, 1, WHITE)
-        x, y = self.get_scaled_coordinate(window_width, window_height, camera_offset_x, camera_offset_y)
+        x, y = self.get_scaled_coordinate(self.x, self.y, window_width, window_height, camera_offset_x, camera_offset_y)
         win.blit(label, (x - label.get_width()/2, y - self.get_scaled_radius()))
