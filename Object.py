@@ -4,7 +4,8 @@ import math
 class Object:
     AU = 149.6e6 * 1000
     G = 6.67428e-11
-    SCALE = 250 / AU
+    BASE_SCALE = 250 / AU
+    SCALE = BASE_SCALE
     IMAGE_SCALE = 1
     TIMESTEP = 3600*24
     
@@ -23,32 +24,35 @@ class Object:
         self.y_vel = y_vel
     
     # View Stuff
-    def draw(self, win, window_width, window_height):
-        x, y = self.get_scaled_coordinate(window_width, window_height)
+    def draw(self, win, window_width, window_height, camera_offset_x, camera_offset_y):
+        x, y = self.get_scaled_coordinate(window_width, window_height, camera_offset_x, camera_offset_y)
         
         if len(self.orbit) > 2:
             updated_points = []
             for point in self.orbit:
                 x, y = point
-                x = x * self.SCALE + window_width / 2
-                y = y * self.SCALE + window_height / 2
+                x = x * self.SCALE + window_width / 2 + camera_offset_x
+                y = y * self.SCALE + window_height / 2 + camera_offset_y
                 updated_points.append((x, y))
 
-            pygame.draw.lines(win, self.color, False, updated_points, int(self.radius * self.SCALE * 0.7))
+            pygame.draw.lines(win, self.color, False, updated_points, int(self.get_scaled_radius() * 0.7))
                 
         image = pygame.image.load(self.image)
-        image = pygame.transform.scale(image, (self.radius * self.SCALE * self.IMAGE_SCALE * 2, self.radius * self.SCALE * self.IMAGE_SCALE * 2))
+        image = pygame.transform.scale(image, (self.get_scaled_radius() * 2, self.get_scaled_radius() * 2))
         image_rect = image.get_rect(center=(x, y))
         win.blit(image, image_rect)
-        self.draw_information(win, window_width, window_height)
+        self.draw_information(win, window_width, window_height, camera_offset_x, camera_offset_y)
     
-    def draw_information(self, win, window_width, window_height):
+    def draw_information(self, win, window_width, window_height, camera_offset_x, camera_offset_y):
         pass   
     
-    def get_scaled_coordinate(self, window_width, window_height):
-        x = self.x * self.SCALE + window_width / 2
-        y = self.y * self.SCALE + window_height / 2
+    def get_scaled_coordinate(self, window_width, window_height, camera_offset_x, camera_offset_y):
+        x = (self.x * self.SCALE) + (window_width / 2)  + camera_offset_x
+        y = (self.y * self.SCALE) + (window_height / 2) + camera_offset_y
         return x, y
+    
+    def get_scaled_radius(self):
+        return self.radius * self.SCALE * self.IMAGE_SCALE
     
     # Pyhsics Stuff 
     def attraction_force(self, other):
